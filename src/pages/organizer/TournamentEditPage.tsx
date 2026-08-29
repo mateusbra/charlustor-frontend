@@ -24,6 +24,7 @@ export function TournamentEditPage() {
   const [tournament, setTournament] = useState<Tournament | null>(null)
   const [participants, setParticipants] = useState<Participant[] | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
+  const [pendingParticipants, setPendingParticipants] = useState<string[] | null>(null)
 
   const load = () => {
     if (!id) return
@@ -50,11 +51,18 @@ export function TournamentEditPage() {
 
   const runAction = async (action: () => Promise<unknown>) => {
     setActionError(null)
+    setPendingParticipants(null)
     try {
       await action()
       load()
     } catch (err) {
-      setActionError(err instanceof ApiError ? err.message : 'Ação falhou')
+      if (err instanceof ApiError) {
+        setActionError(err.message)
+        const body = err.body as { pendingParticipants?: string[] } | undefined
+        if (Array.isArray(body?.pendingParticipants)) setPendingParticipants(body.pendingParticipants)
+      } else {
+        setActionError('Ação falhou')
+      }
     }
   }
 
@@ -86,7 +94,18 @@ export function TournamentEditPage() {
       <p className="mb-4 text-sm text-gray-500">Status: {tournament.status}</p>
       <TournamentForm initialValues={toFormValues(tournament)} submitLabel="Salvar alterações" onSubmit={handleUpdate} />
 
-      {actionError && <p className="mt-3 text-sm text-red-600">{actionError}</p>}
+      {actionError && (
+        <div className="mt-3 text-sm text-red-600">
+          <p>{actionError}</p>
+          {pendingParticipants && pendingParticipants.length > 0 && (
+            <ul className="mt-1 list-disc pl-5 text-xs">
+              {pendingParticipants.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       <div className="mt-4 flex flex-wrap gap-2 border-t border-gray-200 pt-4 text-sm">
         {tournament.status === 'DRAFT' && (
@@ -109,6 +128,30 @@ export function TournamentEditPage() {
           <button onClick={handleDelete} className="rounded border border-red-300 px-3 py-1.5 text-red-600">
             Excluir torneio
           </button>
+        )}
+        {(tournament.status === 'REGISTRATION_OPEN' || tournament.status === 'REGISTRATION_CLOSED') && (
+          <button
+            onClick={() => runAction(() => apiRequest(`/tournaments/${id}/start`, { method: 'POST', token: accessToken ?? undefined }))}
+            className="rounded bg-gray-900 px-3 py-1.5 text-white"
+          >
+            Iniciar torneio
+          </button>
+        )}
+        {tournament.status === 'IN_PROGRESS' && (
+          <>
+            <button
+              onClick={() => runAction(() => apiRequest(`/tournaments/${id}/advance-round`, { method: 'POST', token: accessToken ?? undefined }))}
+              className="rounded bg-gray-900 px-3 py-1.5 text-white"
+            >
+              Avançar rodada
+            </button>
+            <button
+              onClick={() => runAction(() => apiRequest(`/tournaments/${id}/complete`, { method: 'POST', token: accessToken ?? undefined }))}
+              className="rounded border border-gray-300 px-3 py-1.5"
+            >
+              Encerrar torneio
+            </button>
+          </>
         )}
       </div>
 
