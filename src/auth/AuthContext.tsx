@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { apiRequest, ApiError } from './api'
 
 export type User = { id: string; email: string; role: string }
@@ -32,17 +32,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccessToken(null)
   }
 
-  const restoreSession = useCallback(async () => {
-    try {
-      const session = await apiRequest<Session>('/auth/refresh', { method: 'POST' })
-      applySession(session)
-      return true
-    } catch {
-      clearSession()
-      return false
-    } finally {
-      setLoading(false)
-    }
+  // Coalesces concurrent callers (e.g. React StrictMode's double effect
+  // invocation in dev) into a single /auth/refresh call — the backend treats
+  // a reused refresh token as session theft and revokes the whole session,
+  // so firing two requests with the same cookie would lock the user out.
+  const inFlightRefresh = useRef<Promise<boolean> | null>(null)
+
+  const restoreSession = useCallback(() => {
+    if (inFlightRefresh.current) return inFlightRefresh.current
+
+    const promise = (async () => {
+      try {
+        const session = await apiRequest<Session>('/auth/refresh', { method: 'POST' })
+        applySession(session)
+        return true
+      } catch {
+        clearSession()
+        return false
+      } finally {
+        setLoading(false)
+        inFlightRefresh.current = null
+      }
+    })()
+
+    inFlightRefresh.current = promise
+    return promise
   }, [])
 
   useEffect(() => {

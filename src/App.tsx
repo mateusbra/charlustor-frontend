@@ -9,6 +9,8 @@ import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { PublicProfilePage } from './pages/PublicProfilePage'
+import { TournamentsListPage } from './pages/organizer/TournamentsListPage'
+import { TournamentEditPage } from './pages/organizer/TournamentEditPage'
 
 function App() {
   return (
@@ -30,6 +32,22 @@ function App() {
             }
           />
           <Route path="/players/:id" element={<PublicProfilePage />} />
+          <Route
+            path="/organizer/tournaments"
+            element={
+              <PrivateRoute requiredRole="ORGANIZER">
+                <TournamentsListPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/organizer/tournaments/:id/edit"
+            element={
+              <PrivateRoute requiredRole="ORGANIZER">
+                <TournamentEditPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
