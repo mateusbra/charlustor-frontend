@@ -1,11 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext'
+import { PrivateRoute } from './auth/PrivateRoute'
 import { HealthPage } from './pages/HealthPage'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage'
+import { ProfilePage } from './pages/ProfilePage'
+import { PublicProfilePage } from './pages/PublicProfilePage'
 
 function App() {
   return (
@@ -18,6 +21,15 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/players/:id" element={<PublicProfilePage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

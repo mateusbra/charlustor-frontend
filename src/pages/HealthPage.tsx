@@ -26,7 +26,7 @@ export function HealthPage() {
     <main className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-900">
       <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="mb-1 text-xl font-semibold">Torneios Master Duel</h1>
-        <p className="mb-4 text-xs text-gray-400">Feature 002 — Authentication</p>
+        <p className="mb-4 text-xs text-gray-400">Feature 003 — User profiles</p>
         {error && <p className="text-red-600">{error}</p>}
         {!error && !health && <p className="text-gray-500">Consultando backend...</p>}
         {health && (
@@ -48,9 +48,14 @@ export function HealthPage() {
               <span>
                 Logado como <span className="font-medium">{user.email}</span>
               </span>
-              <button onClick={() => logout()} className="text-gray-500 underline">
-                Sair
-              </button>
+              <span className="space-x-3">
+                <Link to="/profile" className="text-gray-500 underline">
+                  Meu perfil
+                </Link>
+                <button onClick={() => logout()} className="text-gray-500 underline">
+                  Sair
+                </button>
+              </span>
             </div>
           ) : (
             <Link to="/login" className="text-gray-500 underline">
