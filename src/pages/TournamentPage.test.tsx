@@ -21,13 +21,16 @@ const TOURNAMENT = {
   organizerId: 'org-1',
 }
 
-function renderPage(participants: unknown[]) {
+function renderPage(participants: unknown[], loggedIn = true) {
   vi.mocked(api.apiRequest).mockImplementation((path: string) => {
     if (path === '/auth/refresh') {
+      if (!loggedIn) return Promise.reject(new api.ApiError(401, 'Not authenticated'))
       return Promise.resolve({ accessToken: 'token', user: { id: 'user-1', email: 'a@a.com', role: 'PLAYER' } })
     }
     if (path === '/tournaments/t-1') return Promise.resolve(TOURNAMENT)
     if (path === '/tournaments/t-1/participants') return Promise.resolve(participants)
+    if (path === '/tournaments/t-1/rounds') return Promise.resolve([])
+    if (path === '/tournaments/t-1/standings') return Promise.resolve([])
     return Promise.resolve(undefined)
   })
 
@@ -68,5 +71,29 @@ describe('TournamentPage', () => {
         expect.objectContaining({ method: 'POST' }),
       ),
     )
+  })
+
+  it('renders read-only (participants, no registration button) without an active session', async () => {
+    renderPage([{ id: 'p-1', user: { id: 'user-1', nickname: 'Duelist' }, status: 'REGISTERED' }], false)
+
+    expect(await screen.findByText('Duelist')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Inscrever-se' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Sair do torneio' })).not.toBeInTheDocument()
+  })
+
+  it('polls for updates periodically so a new round shows without a manual reload', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      renderPage([])
+      await screen.findByText(/Weekly #1/)
+
+      const callsBefore = vi.mocked(api.apiRequest).mock.calls.filter((c) => c[0] === '/tournaments/t-1').length
+      await vi.advanceTimersByTimeAsync(15000)
+      const callsAfter = vi.mocked(api.apiRequest).mock.calls.filter((c) => c[0] === '/tournaments/t-1').length
+
+      expect(callsAfter).toBeGreaterThan(callsBefore)
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })

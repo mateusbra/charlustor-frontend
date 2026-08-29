@@ -34,6 +34,7 @@ function App() {
           />
           <Route path="/players/:id" element={<PublicProfilePage />} />
           <Route path="/tournaments/:id" element={<TournamentPage />} />
+          <Route path="/t/:id" element={<TournamentPage />} />
           <Route
             path="/organizer/tournaments"
             element={

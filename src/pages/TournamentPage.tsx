@@ -30,6 +30,13 @@ export function TournamentPage() {
 
   useEffect(load, [id])
 
+  // RNF2 — refresh periodically so pairings/standings stay current without a manual reload.
+  useEffect(() => {
+    if (!id) return
+    const interval = setInterval(load, 15000)
+    return () => clearInterval(interval)
+  }, [id])
+
   const myParticipation = participants?.find((p) => p.user.id === user?.id)
   const isRegistered = myParticipation?.status === 'REGISTERED'
 
