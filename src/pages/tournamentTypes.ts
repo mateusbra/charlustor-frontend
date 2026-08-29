@@ -22,6 +22,20 @@ export type Participant = {
   user: { id: string; nickname: string | null }
 }
 
+export type DeckStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
+export type DecodedCard = { id: number | null; name: string; quantity: number }
+export type DecodedDeck = { main: DecodedCard[]; extra: DecodedCard[]; side: DecodedCard[] }
+
+export type Deck = {
+  id: string
+  participantId: string
+  mainExtraImage: string
+  sideImage: string
+  decodedCards: DecodedDeck
+  validationStatus: DeckStatus
+  submittedAt: string
+}
+
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {
   SWISS: 'Suíço',
   SINGLE_ELIM: 'Eliminação simples',

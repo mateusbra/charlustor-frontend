@@ -3,13 +3,16 @@ import { useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { AuthLayout } from '../auth/AuthLayout'
 import { apiRequest, ApiError } from '../auth/api'
-import { FORMAT_LABELS, type Participant, type Tournament } from './tournamentTypes'
+import { FORMAT_LABELS, type Deck, type Participant, type Tournament } from './tournamentTypes'
+import { DeckSubmitForm } from './DeckSubmitForm'
+import { DeckPreview } from './DeckPreview'
 
 export function TournamentPage() {
   const { id } = useParams<{ id: string }>()
   const { user, accessToken } = useAuth()
   const [tournament, setTournament] = useState<Tournament | null>(null)
   const [participants, setParticipants] = useState<Participant[] | null>(null)
+  const [myDeck, setMyDeck] = useState<Deck | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -23,6 +26,13 @@ export function TournamentPage() {
 
   const myParticipation = participants?.find((p) => p.user.id === user?.id)
   const isRegistered = myParticipation?.status === 'REGISTERED'
+
+  useEffect(() => {
+    if (!myParticipation) return
+    apiRequest<Deck>(`/participants/${myParticipation.id}/deck`)
+      .then(setMyDeck)
+      .catch(() => setMyDeck(null))
+  }, [myParticipation?.id])
 
   const handleToggleRegistration = async () => {
     setError(null)
@@ -69,6 +79,25 @@ export function TournamentPage() {
             {isRegistered ? 'Sair do torneio' : 'Inscrever-se'}
           </button>
           {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        </div>
+      )}
+
+      {isRegistered && myParticipation && tournament.status === 'REGISTRATION_OPEN' && (
+        <div className="mt-4 border-t border-gray-200 pt-4">
+          <p className="mb-2 text-xs text-gray-500">Meu deck</p>
+          {myDeck && (
+            <p className="mb-2 text-xs text-gray-500">
+              Última submissão: <span className="font-medium">{myDeck.validationStatus}</span>
+            </p>
+          )}
+          <DeckSubmitForm participantId={myParticipation.id} onSubmitted={setMyDeck} />
+        </div>
+      )}
+
+      {isRegistered && myDeck && tournament.status !== 'REGISTRATION_OPEN' && (
+        <div className="mt-4 border-t border-gray-200 pt-4">
+          <p className="mb-2 text-xs text-gray-500">Meu deck — {myDeck.validationStatus}</p>
+          <DeckPreview decodedCards={myDeck.decodedCards} />
         </div>
       )}
 

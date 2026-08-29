@@ -14,12 +14,14 @@ export async function apiRequest<T = unknown>(
   options: RequestInit & { token?: string } = {},
 ): Promise<T> {
   const { token, headers, ...rest } = options
+  const isFormData = rest.body instanceof FormData
 
   const res = await fetch(`${API_URL}${path}`, {
     ...rest,
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      // FormData sets its own multipart Content-Type (with boundary) — never override it.
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },

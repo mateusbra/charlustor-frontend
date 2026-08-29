@@ -5,6 +5,7 @@ import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest, ApiError } from '../../auth/api'
 import type { Participant, Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
+import { DeckReviewRow } from './DeckReviewRow'
 
 function toFormValues(t: Tournament): TournamentFormValues {
   return {
@@ -115,16 +116,11 @@ export function TournamentEditPage() {
         <p className="mb-2 text-xs text-gray-500">
           Inscritos ({participants?.filter((p) => p.status === 'REGISTERED').length ?? 0})
         </p>
-        <ul className="space-y-1 text-sm">
+        <ul className="space-y-2">
           {participants
             ?.filter((p) => p.status === 'REGISTERED')
             .map((p) => (
-              <li key={p.id} className="flex items-center justify-between">
-                <span>{p.user.nickname ?? '(sem nickname)'}</span>
-                <button onClick={() => handleRemoveParticipant(p.user.id)} className="text-xs text-red-600 underline">
-                  Remover
-                </button>
-              </li>
+              <DeckReviewRow key={p.id} participant={p} onRemove={() => handleRemoveParticipant(p.user.id)} />
             ))}
         </ul>
       </div>
