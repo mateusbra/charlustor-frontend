@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest, ApiError } from '../../auth/api'
-import type { Participant, Tournament } from '../tournamentTypes'
+import type { Participant, Round, Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
 import { DeckReviewRow } from './DeckReviewRow'
 
@@ -25,11 +25,15 @@ export function TournamentEditPage() {
   const [participants, setParticipants] = useState<Participant[] | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const [pendingParticipants, setPendingParticipants] = useState<string[] | null>(null)
+  const [rounds, setRounds] = useState<Round[] | null>(null)
 
   const load = () => {
     if (!id) return
     apiRequest<Tournament>(`/tournaments/${id}`).then(setTournament)
     apiRequest<Participant[]>(`/tournaments/${id}/participants`).then(setParticipants)
+    apiRequest<Round[]>(`/tournaments/${id}/rounds`, { token: accessToken ?? undefined })
+      .then(setRounds)
+      .catch(() => setRounds(null))
   }
 
   useEffect(load, [id])
@@ -154,6 +158,19 @@ export function TournamentEditPage() {
           </>
         )}
       </div>
+
+      {rounds && rounds.length > 0 && (
+        <div className="mt-4 border-t border-gray-200 pt-4">
+          <p className="mb-2 text-xs text-gray-500">Rodadas</p>
+          <ul className="space-y-1 text-sm">
+            {rounds.map((r) => (
+              <li key={r.id}>
+                Rodada {r.number} — {r.status} — {r._count.matches} partida(s)
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="mt-4 border-t border-gray-200 pt-4">
         <p className="mb-2 text-xs text-gray-500">

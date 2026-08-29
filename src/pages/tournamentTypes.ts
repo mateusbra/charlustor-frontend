@@ -36,6 +36,15 @@ export type Deck = {
   submittedAt: string
 }
 
+export type RoundStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
+export type Round = {
+  id: string
+  tournamentId: string
+  number: number
+  status: RoundStatus
+  _count: { matches: number }
+}
+
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {
   SWISS: 'Suíço',
   SINGLE_ELIM: 'Eliminação simples',
