@@ -1,5 +1,6 @@
 export type TournamentFormat = 'SWISS' | 'SINGLE_ELIM' | 'DOUBLE_ELIM' | 'SWISS_TOP_CUT'
 export type TournamentStatus = 'DRAFT' | 'REGISTRATION_OPEN' | 'REGISTRATION_CLOSED' | 'IN_PROGRESS' | 'COMPLETED'
+export type ParticipantStatus = 'REGISTERED' | 'WITHDRAWN' | 'DISQUALIFIED'
 
 export type Tournament = {
   id: string
@@ -10,6 +11,15 @@ export type Tournament = {
   scheduledAt: string
   status: TournamentStatus
   organizerId: string
+}
+
+export type Participant = {
+  id: string
+  tournamentId: string
+  userId: string
+  status: ParticipantStatus
+  registeredAt: string
+  user: { id: string; nickname: string | null }
 }
 
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest, ApiError } from '../../auth/api'
-import type { Tournament } from './types'
+import type { Participant, Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
 
 function toFormValues(t: Tournament): TournamentFormValues {
@@ -21,11 +21,13 @@ export function TournamentEditPage() {
   const { accessToken } = useAuth()
   const navigate = useNavigate()
   const [tournament, setTournament] = useState<Tournament | null>(null)
+  const [participants, setParticipants] = useState<Participant[] | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
 
   const load = () => {
     if (!id) return
     apiRequest<Tournament>(`/tournaments/${id}`).then(setTournament)
+    apiRequest<Participant[]>(`/tournaments/${id}/participants`).then(setParticipants)
   }
 
   useEffect(load, [id])
@@ -65,6 +67,11 @@ export function TournamentEditPage() {
     }
   }
 
+  const handleRemoveParticipant = (userId: string) =>
+    runAction(() =>
+      apiRequest(`/tournaments/${id}/participants/${userId}`, { method: 'DELETE', token: accessToken ?? undefined }),
+    )
+
   if (!tournament) {
     return (
       <AuthLayout title="Editar torneio">
@@ -102,6 +109,24 @@ export function TournamentEditPage() {
             Excluir torneio
           </button>
         )}
+      </div>
+
+      <div className="mt-4 border-t border-gray-200 pt-4">
+        <p className="mb-2 text-xs text-gray-500">
+          Inscritos ({participants?.filter((p) => p.status === 'REGISTERED').length ?? 0})
+        </p>
+        <ul className="space-y-1 text-sm">
+          {participants
+            ?.filter((p) => p.status === 'REGISTERED')
+            .map((p) => (
+              <li key={p.id} className="flex items-center justify-between">
+                <span>{p.user.nickname ?? '(sem nickname)'}</span>
+                <button onClick={() => handleRemoveParticipant(p.user.id)} className="text-xs text-red-600 underline">
+                  Remover
+                </button>
+              </li>
+            ))}
+        </ul>
       </div>
     </AuthLayout>
   )

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest } from '../../auth/api'
-import { FORMAT_LABELS, type Tournament } from './types'
+import { FORMAT_LABELS, type Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
 
 const EMPTY_FORM: TournamentFormValues = {
@@ -56,9 +56,14 @@ export function TournamentsListPage() {
               <span>
                 {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-gray-500">{t.status}</span>
               </span>
-              <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-gray-500 underline">
-                Editar
-              </Link>
+              <span className="space-x-3">
+                <Link to={`/tournaments/${t.id}`} className="text-gray-500 underline">
+                  Ver página pública
+                </Link>
+                <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-gray-500 underline">
+                  Editar
+                </Link>
+              </span>
             </li>
           ))}
         </ul>

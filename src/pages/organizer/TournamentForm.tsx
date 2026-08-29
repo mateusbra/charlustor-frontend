@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { FORMAT_LABELS, type TournamentFormat } from './types'
+import { FORMAT_LABELS, type TournamentFormat } from '../tournamentTypes'
 
 export type TournamentFormValues = {
   name: string
