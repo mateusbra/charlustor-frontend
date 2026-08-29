@@ -37,12 +37,26 @@ export type Deck = {
 }
 
 export type RoundStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
+export type MatchResultStatus = 'PENDING' | 'CONFIRMED' | 'DISPUTED'
+export type MatchParticipant = { id: string; user: { id: string; nickname: string | null } }
+export type Match = {
+  id: string
+  roundId: string
+  participantAId: string
+  participantBId: string | null
+  reportedScoreA: string | null
+  reportedScoreB: string | null
+  resultStatus: MatchResultStatus
+  confirmedScore: string | null
+  participantA: MatchParticipant
+  participantB: MatchParticipant | null
+}
 export type Round = {
   id: string
   tournamentId: string
   number: number
   status: RoundStatus
-  _count: { matches: number }
+  matches: Match[]
 }
 
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {

@@ -6,6 +6,7 @@ import { apiRequest, ApiError } from '../../auth/api'
 import type { Participant, Round, Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
 import { DeckReviewRow } from './DeckReviewRow'
+import { DisputedMatchRow } from './DisputedMatchRow'
 
 function toFormValues(t: Tournament): TournamentFormValues {
   return {
@@ -165,9 +166,23 @@ export function TournamentEditPage() {
           <ul className="space-y-1 text-sm">
             {rounds.map((r) => (
               <li key={r.id}>
-                Rodada {r.number} — {r.status} — {r._count.matches} partida(s)
+                Rodada {r.number} — {r.status} — {r.matches.length} partida(s)
               </li>
             ))}
+          </ul>
+        </div>
+      )}
+
+      {rounds && rounds.some((r) => r.matches.some((m) => m.resultStatus === 'DISPUTED')) && (
+        <div className="mt-4 border-t border-gray-200 pt-4">
+          <p className="mb-2 text-xs text-gray-500">Partidas em disputa</p>
+          <ul className="space-y-2">
+            {rounds
+              .flatMap((r) => r.matches)
+              .filter((m) => m.resultStatus === 'DISPUTED')
+              .map((m) => (
+                <DisputedMatchRow key={m.id} match={m} onResolved={load} />
+              ))}
           </ul>
         </div>
       )}
