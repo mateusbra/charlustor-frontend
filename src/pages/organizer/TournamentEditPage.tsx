@@ -150,6 +150,14 @@ export function TournamentEditPage() {
             >
               Avançar rodada
             </button>
+            {tournament.format === 'SWISS_TOP_CUT' && !rounds?.some((r) => r.phase === 'TOP_CUT') && (
+              <button
+                onClick={() => runAction(() => apiRequest(`/tournaments/${id}/start-top-cut`, { method: 'POST', token: accessToken ?? undefined }))}
+                className="rounded border border-gray-300 px-3 py-1.5"
+              >
+                Iniciar Top Cut
+              </button>
+            )}
             <button
               onClick={() => runAction(() => apiRequest(`/tournaments/${id}/complete`, { method: 'POST', token: accessToken ?? undefined }))}
               className="rounded border border-gray-300 px-3 py-1.5"
@@ -166,7 +174,7 @@ export function TournamentEditPage() {
           <ul className="space-y-1 text-sm">
             {rounds.map((r) => (
               <li key={r.id}>
-                Rodada {r.number} — {r.status} — {r.matches.length} partida(s)
+                Rodada {r.number} {r.phase === 'TOP_CUT' && '(Top Cut)'} — {r.status} — {r.matches.length} partida(s)
               </li>
             ))}
           </ul>

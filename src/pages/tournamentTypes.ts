@@ -37,6 +37,7 @@ export type Deck = {
 }
 
 export type RoundStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
+export type RoundPhase = 'SWISS' | 'TOP_CUT'
 export type MatchResultStatus = 'PENDING' | 'CONFIRMED' | 'DISPUTED'
 export type MatchParticipant = { id: string; user: { id: string; nickname: string | null } }
 export type Match = {
@@ -56,6 +57,7 @@ export type Round = {
   tournamentId: string
   number: number
   status: RoundStatus
+  phase: RoundPhase
   matches: Match[]
 }
 
