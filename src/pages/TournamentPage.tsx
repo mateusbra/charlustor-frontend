@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { AuthLayout } from '../auth/AuthLayout'
 import { apiRequest, ApiError } from '../auth/api'
-import { FORMAT_LABELS, type Deck, type Participant, type Round, type Tournament } from './tournamentTypes'
+import { FORMAT_LABELS, type Deck, type Participant, type Round, type StandingRow, type Tournament } from './tournamentTypes'
 import { DeckSubmitForm } from './DeckSubmitForm'
 import { DeckPreview } from './DeckPreview'
 import { ReportScoreForm } from './ReportScoreForm'
+import { StandingsTable } from './StandingsTable'
 
 export function TournamentPage() {
   const { id } = useParams<{ id: string }>()
@@ -15,6 +16,7 @@ export function TournamentPage() {
   const [participants, setParticipants] = useState<Participant[] | null>(null)
   const [myDeck, setMyDeck] = useState<Deck | null>(null)
   const [rounds, setRounds] = useState<Round[] | null>(null)
+  const [standings, setStandings] = useState<StandingRow[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -23,6 +25,7 @@ export function TournamentPage() {
     apiRequest<Tournament>(`/tournaments/${id}`).then(setTournament)
     apiRequest<Participant[]>(`/tournaments/${id}/participants`).then(setParticipants)
     apiRequest<Round[]>(`/tournaments/${id}/rounds`).then(setRounds)
+    apiRequest<StandingRow[]>(`/tournaments/${id}/standings`).then(setStandings)
   }
 
   useEffect(load, [id])
@@ -113,6 +116,13 @@ export function TournamentPage() {
         <div className="mt-4 border-t border-gray-200 pt-4">
           <p className="mb-2 text-xs text-gray-500">Rodada {currentRound?.number}</p>
           <ReportScoreForm match={myMatch} myUserId={user.id} onReported={load} />
+        </div>
+      )}
+
+      {(tournament.status === 'IN_PROGRESS' || tournament.status === 'COMPLETED') && standings && (
+        <div className="mt-4 border-t border-gray-200 pt-4">
+          <p className="mb-2 text-xs text-gray-500">Standings</p>
+          <StandingsTable standings={standings} />
         </div>
       )}
 

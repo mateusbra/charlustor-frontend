@@ -59,6 +59,16 @@ export type Round = {
   matches: Match[]
 }
 
+export type StandingRow = {
+  position: number
+  participantId: string
+  nickname: string | null
+  points: number
+  wins: number
+  losses: number
+  buchholz: number
+}
+
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {
   SWISS: 'Suíço',
   SINGLE_ELIM: 'Eliminação simples',
