@@ -71,6 +71,22 @@ export type StandingRow = {
   buchholz: number
 }
 
+export type Season = {
+  id: string
+  name: string
+  startDate: string
+  endDate: string | null
+  isActive: boolean
+}
+
+export type SeasonRankingRow = {
+  position: number
+  userId: string
+  nickname: string | null
+  points: number
+  tournamentsPlayed: number
+}
+
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {
   SWISS: 'Suíço',
   SINGLE_ELIM: 'Eliminação simples',

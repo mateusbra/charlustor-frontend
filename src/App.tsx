@@ -12,6 +12,7 @@ import { PublicProfilePage } from './pages/PublicProfilePage'
 import { TournamentsListPage } from './pages/organizer/TournamentsListPage'
 import { TournamentEditPage } from './pages/organizer/TournamentEditPage'
 import { TournamentPage } from './pages/TournamentPage'
+import { RankingPage } from './pages/RankingPage'
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/players/:id" element={<PublicProfilePage />} />
           <Route path="/tournaments/:id" element={<TournamentPage />} />
           <Route path="/t/:id" element={<TournamentPage />} />
+          <Route path="/ranking" element={<RankingPage />} />
           <Route
             path="/organizer/tournaments"
             element={
