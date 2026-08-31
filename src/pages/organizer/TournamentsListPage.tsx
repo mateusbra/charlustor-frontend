@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest } from '../../auth/api'
-import { FORMAT_LABELS, type Tournament } from '../tournamentTypes'
+import { FORMAT_LABELS, TOURNAMENT_STATUS_BADGE, type Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
+import { Badge } from '../../components/Badge'
 
 const EMPTY_FORM: TournamentFormValues = {
   name: '',
@@ -53,8 +54,9 @@ export function TournamentsListPage() {
         <ul className="space-y-2">
           {myTournaments.map((t) => (
             <li key={t.id} className="flex items-center justify-between border-b border-panel-border pb-2 text-sm last:border-0">
-              <span className="text-text">
-                {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-text-muted">{t.status}</span>
+              <span className="flex items-center gap-2 text-text">
+                {t.name} <span className="text-text-muted">— {FORMAT_LABELS[t.format]}</span>
+                <Badge color={TOURNAMENT_STATUS_BADGE[t.status]}>{t.status}</Badge>
               </span>
               <span className="space-x-3">
                 <Link to={`/tournaments/${t.id}`} className="text-brand-cyan hover:underline">

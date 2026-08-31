@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest } from '../../auth/api'
-import type { AdminUser, Role } from '../tournamentTypes'
+import { ROLE_BADGE, type AdminUser, type Role } from '../tournamentTypes'
+import { Badge } from '../../components/Badge'
 
 const ROLES: Role[] = ['PLAYER', 'ORGANIZER', 'ADMIN']
 
@@ -35,17 +36,20 @@ export function AdminUsersPage() {
             <span className="text-text">
               {u.nickname ?? u.email} <span className="text-text-muted">({u.email})</span>
             </span>
-            <select
-              value={u.role}
-              onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
-              className="rounded border border-panel-border bg-ink/40 px-2 py-1 text-sm text-text focus:border-brand-pink focus:outline-none"
-            >
-              {ROLES.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
+            <span className="flex items-center gap-2">
+              <Badge color={ROLE_BADGE[u.role]}>{u.role}</Badge>
+              <select
+                value={u.role}
+                onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
+                className="rounded border border-panel-border bg-ink/40 px-2 py-1 text-sm text-text focus:border-brand-pink focus:outline-none"
+              >
+                {ROLES.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+            </span>
           </li>
         ))}
       </ul>

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest } from '../../auth/api'
-import { FORMAT_LABELS, type OrganizerDashboardRow } from '../tournamentTypes'
+import { FORMAT_LABELS, TOURNAMENT_STATUS_BADGE, type OrganizerDashboardRow } from '../tournamentTypes'
+import { Badge } from '../../components/Badge'
 
 export function OrganizerDashboardPage() {
   const { accessToken } = useAuth()
@@ -19,23 +20,26 @@ export function OrganizerDashboardPage() {
       {tournaments !== null && tournaments.length === 0 && (
         <p className="text-sm text-text-muted">Você ainda não criou nenhum torneio.</p>
       )}
-      <ul className="space-y-3">
+      <ul className="grid gap-3 sm:grid-cols-2">
         {tournaments?.map((t) => (
-          <li key={t.id} className="rounded-lg border border-panel-border bg-panel-soft/40 p-3 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-text">
-                {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-text-muted">{t.status}</span>
-              </span>
-              <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-brand-cyan hover:underline">
-                Ver torneio
-              </Link>
+          <li key={t.id} className="rounded-lg border border-panel-border border-l-4 border-l-brand-pink bg-panel-soft p-4">
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-display text-lg font-bold text-text">{t.name}</h3>
+              <Badge color={TOURNAMENT_STATUS_BADGE[t.status]}>{t.status}</Badge>
             </div>
+            <p className="mt-1 text-xs text-text-muted">{FORMAT_LABELS[t.format]}</p>
             {(t.pendingDecksCount > 0 || t.disputedMatchesCount > 0) && (
-              <div className="mt-1 space-x-3 text-xs text-brand-gold">
-                {t.pendingDecksCount > 0 && <span>{t.pendingDecksCount} deck(s) pendente(s)</span>}
-                {t.disputedMatchesCount > 0 && <span>{t.disputedMatchesCount} partida(s) em disputa</span>}
+              <div className="mt-3 flex flex-wrap gap-2">
+                {t.pendingDecksCount > 0 && <Badge color="gold">{t.pendingDecksCount} deck(s) pendente(s)</Badge>}
+                {t.disputedMatchesCount > 0 && <Badge color="red">{t.disputedMatchesCount} partida(s) em disputa</Badge>}
               </div>
             )}
+            <Link
+              to={`/organizer/tournaments/${t.id}/edit`}
+              className="mt-3 inline-block text-xs font-bold tracking-wide text-brand-cyan uppercase hover:underline"
+            >
+              Ver torneio →
+            </Link>
           </li>
         ))}
       </ul>

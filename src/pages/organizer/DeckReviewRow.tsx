@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../auth/AuthContext'
 import { apiRequest } from '../../auth/api'
 import { DeckPreview } from '../DeckPreview'
-import type { Deck, Participant } from '../tournamentTypes'
+import { DECK_STATUS_BADGE, type Deck, type Participant } from '../tournamentTypes'
+import { Badge } from '../../components/Badge'
 
 export function DeckReviewRow({ participant, onRemove }: { participant: Participant; onRemove: () => void }) {
   const { accessToken } = useAuth()
@@ -34,7 +35,7 @@ export function DeckReviewRow({ participant, onRemove }: { participant: Particip
           {deck === null && <span className="text-text-muted">sem deck</span>}
           {deck && (
             <>
-              <span className="text-text-muted">{deck.validationStatus}</span>
+              <Badge color={DECK_STATUS_BADGE[deck.validationStatus]}>{deck.validationStatus}</Badge>
               <button onClick={() => setExpanded((v) => !v)} className="text-brand-cyan hover:underline">
                 {expanded ? 'ocultar' : 'ver'}
               </button>

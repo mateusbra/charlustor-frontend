@@ -3,7 +3,17 @@ import { useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { AuthLayout } from '../auth/AuthLayout'
 import { apiRequest, ApiError } from '../auth/api'
-import { FORMAT_LABELS, type Deck, type Participant, type Round, type StandingRow, type Tournament } from './tournamentTypes'
+import {
+  DECK_STATUS_BADGE,
+  FORMAT_LABELS,
+  TOURNAMENT_STATUS_BADGE,
+  type Deck,
+  type Participant,
+  type Round,
+  type StandingRow,
+  type Tournament,
+} from './tournamentTypes'
+import { Badge } from '../components/Badge'
 import { DeckSubmitForm } from './DeckSubmitForm'
 import { DeckPreview } from './DeckPreview'
 import { ReportScoreForm } from './ReportScoreForm'
@@ -83,9 +93,9 @@ export function TournamentPage() {
       <p className="text-sm text-text-muted">
         {FORMAT_LABELS[tournament.format]} — {new Date(tournament.scheduledAt).toLocaleString('pt-BR')}
       </p>
-      <p className="mt-1 text-sm text-text-muted">
-        Status: <span className="text-brand-cyan">{tournament.status}</span>
-      </p>
+      <div className="mt-2">
+        <Badge color={TOURNAMENT_STATUS_BADGE[tournament.status]}>{tournament.status}</Badge>
+      </div>
 
       {user && tournament.status === 'REGISTRATION_OPEN' && (
         <div className="mt-4">
@@ -107,7 +117,7 @@ export function TournamentPage() {
           <p className="mb-2 text-xs text-text-muted">Meu deck</p>
           {myDeck && (
             <p className="mb-2 text-xs text-text-muted">
-              Última submissão: <span className="font-medium text-brand-cyan">{myDeck.validationStatus}</span>
+              Última submissão: <Badge color={DECK_STATUS_BADGE[myDeck.validationStatus]}>{myDeck.validationStatus}</Badge>
             </p>
           )}
           <DeckSubmitForm participantId={myParticipation.id} onSubmitted={setMyDeck} />
@@ -117,7 +127,7 @@ export function TournamentPage() {
       {isRegistered && myDeck && tournament.status !== 'REGISTRATION_OPEN' && (
         <div className="mt-4 border-t border-panel-border pt-4">
           <p className="mb-2 text-xs text-text-muted">
-            Meu deck — <span className="text-brand-cyan">{myDeck.validationStatus}</span>
+            Meu deck — <Badge color={DECK_STATUS_BADGE[myDeck.validationStatus]}>{myDeck.validationStatus}</Badge>
           </p>
           <DeckPreview decodedCards={myDeck.decodedCards} />
         </div>

@@ -3,10 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest, ApiError } from '../../auth/api'
-import type { Participant, Round, Tournament } from '../tournamentTypes'
+import { TOURNAMENT_STATUS_BADGE, type Participant, type Round, type Tournament } from '../tournamentTypes'
 import { TournamentForm, type TournamentFormValues } from './TournamentForm'
 import { DeckReviewRow } from './DeckReviewRow'
 import { DisputedMatchRow } from './DisputedMatchRow'
+import { Badge } from '../../components/Badge'
 
 function toFormValues(t: Tournament): TournamentFormValues {
   return {
@@ -96,9 +97,9 @@ export function TournamentEditPage() {
 
   return (
     <AuthLayout title={`Editar: ${tournament.name}`} wide>
-      <p className="mb-4 text-sm text-text-muted">
-        Status: <span className="text-brand-cyan">{tournament.status}</span>
-      </p>
+      <div className="mb-4">
+        <Badge color={TOURNAMENT_STATUS_BADGE[tournament.status]}>{tournament.status}</Badge>
+      </div>
       <TournamentForm initialValues={toFormValues(tournament)} submitLabel="Salvar alterações" onSubmit={handleUpdate} />
 
       {actionError && (

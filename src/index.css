@@ -3,13 +3,14 @@
 @theme {
   --font-display: "Rajdhani", "Inter", sans-serif;
 
-  --color-ink: #08070f;
-  --color-panel: #131022;
-  --color-panel-soft: #1a1630;
-  --color-panel-border: #2c2645;
+  --color-ink: #0a1526;
+  --color-ink-deep: #060d18;
+  --color-panel: #11213a;
+  --color-panel-soft: #172946;
+  --color-panel-border: #263c5e;
 
-  --color-text: #f4f2fb;
-  --color-text-muted: #a29bc2;
+  --color-text: #f2f5fa;
+  --color-text-muted: #93a3bd;
 
   --color-brand-pink: #ff2e8a;
   --color-brand-pink-soft: #ff6bb0;
@@ -23,9 +24,7 @@
 body {
   background-color: var(--color-ink);
   color: var(--color-text);
-  background-image:
-    radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--color-brand-purple) 22%, transparent), transparent 45%),
-    radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--color-brand-pink) 16%, transparent), transparent 40%);
+  background-image: linear-gradient(180deg, var(--color-ink-deep) 0%, var(--color-ink) 45%, var(--color-ink) 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }

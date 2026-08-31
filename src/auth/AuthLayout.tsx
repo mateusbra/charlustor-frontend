@@ -4,7 +4,10 @@ import { useAuth } from './AuthContext'
 
 function NavLink({ to, children }: { to: string; children: ReactNode }) {
   return (
-    <Link to={to} className="text-sm text-text-muted transition hover:text-brand-pink">
+    <Link
+      to={to}
+      className="text-xs font-bold tracking-widest text-text-muted uppercase transition hover:text-brand-pink"
+    >
       {children}
     </Link>
   )
@@ -16,16 +19,16 @@ function Header() {
   const isAdmin = user?.role === 'ADMIN'
 
   return (
-    <header className="border-b border-panel-border/60 bg-ink/80 backdrop-blur">
-      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+    <header className="border-b border-panel-border bg-ink-deep">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
         <Link
           to="/"
-          className="font-display text-xl font-bold tracking-wide text-transparent"
+          className="font-display text-2xl font-bold tracking-wide text-transparent"
           style={{ backgroundImage: 'linear-gradient(90deg, var(--color-brand-pink), var(--color-brand-purple))', backgroundClip: 'text', WebkitBackgroundClip: 'text' }}
         >
           CHARLUSTOR
         </Link>
-        <nav className="flex flex-wrap items-center gap-4">
+        <nav className="flex flex-wrap items-center gap-5">
           <NavLink to="/ranking">Ranking</NavLink>
           {isOrganizer && <NavLink to="/organizer">Painel</NavLink>}
           {isOrganizer && <NavLink to="/organizer/tournaments">Meus torneios</NavLink>}
@@ -34,12 +37,20 @@ function Header() {
           {user ? (
             <>
               <NavLink to="/profile">Perfil</NavLink>
-              <button onClick={() => logout()} className="text-sm text-text-muted transition hover:text-brand-red">
+              <button
+                onClick={() => logout()}
+                className="text-xs font-bold tracking-widest text-text-muted uppercase transition hover:text-brand-red"
+              >
                 Sair
               </button>
             </>
           ) : (
-            <NavLink to="/login">Entrar</NavLink>
+            <Link
+              to="/login"
+              className="rounded bg-gradient-to-r from-brand-pink to-brand-purple px-4 py-1.5 text-xs font-bold tracking-widest text-white uppercase transition hover:opacity-90"
+            >
+              Entrar
+            </Link>
           )}
         </nav>
       </div>
@@ -51,12 +62,12 @@ export function AuthLayout({ title, children, wide }: { title: string; children:
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="mx-auto flex max-w-4xl justify-center px-4 py-10 sm:px-6">
-        <div
-          className={`w-full ${wide ? 'max-w-2xl' : 'max-w-sm'} rounded-xl border border-panel-border bg-panel/80 p-8 shadow-[0_0_40px_-15px_var(--color-brand-purple)]`}
-        >
-          <h1 className="font-display mb-4 text-xl font-semibold text-text">{title}</h1>
-          {children}
+      <main className="mx-auto flex max-w-5xl justify-center px-4 py-10 sm:px-6">
+        <div className={`w-full ${wide ? 'max-w-3xl' : 'max-w-sm'} rounded-lg border border-panel-border bg-panel`}>
+          <div className="rounded-t-lg border-b-2 border-brand-pink bg-panel-soft px-6 py-4 sm:px-8">
+            <h1 className="font-display text-2xl font-bold text-text">{title}</h1>
+          </div>
+          <div className="p-6 sm:p-8">{children}</div>
         </div>
       </main>
     </div>

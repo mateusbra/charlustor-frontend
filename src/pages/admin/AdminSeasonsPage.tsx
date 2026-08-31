@@ -3,6 +3,7 @@ import { useAuth } from '../../auth/AuthContext'
 import { AuthLayout } from '../../auth/AuthLayout'
 import { apiRequest, ApiError } from '../../auth/api'
 import type { Season } from '../tournamentTypes'
+import { Badge } from '../../components/Badge'
 
 export function AdminSeasonsPage() {
   const { accessToken } = useAuth()
@@ -80,8 +81,9 @@ export function AdminSeasonsPage() {
         <ul className="space-y-2">
           {seasons?.map((s) => (
             <li key={s.id} className="flex items-center justify-between border-b border-panel-border pb-2 text-sm last:border-0">
-              <span className="text-text">
-                {s.name} — <span className={s.isActive ? 'text-brand-cyan' : 'text-text-muted'}>{s.isActive ? 'ativa' : 'inativa'}</span>
+              <span className="flex items-center gap-2 text-text">
+                {s.name}
+                <Badge color={s.isActive ? 'green' : 'gray'}>{s.isActive ? 'ativa' : 'inativa'}</Badge>
               </span>
               {s.isActive ? (
                 <button

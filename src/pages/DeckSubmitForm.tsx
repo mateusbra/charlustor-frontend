@@ -2,7 +2,8 @@ import { useState, type FormEvent } from 'react'
 import { useAuth } from '../auth/AuthContext'
 import { apiRequest, ApiError } from '../auth/api'
 import { DeckPreview } from './DeckPreview'
-import type { Deck } from './tournamentTypes'
+import { DECK_STATUS_BADGE, type Deck } from './tournamentTypes'
+import { Badge } from '../components/Badge'
 
 export function DeckSubmitForm({ participantId, onSubmitted }: { participantId: string; onSubmitted: (deck: Deck) => void }) {
   const { accessToken } = useAuth()
@@ -72,7 +73,7 @@ export function DeckSubmitForm({ participantId, onSubmitted }: { participantId: 
       {result && (
         <div className="mt-4 border-t border-panel-border pt-4">
           <p className="mb-2 text-xs text-text-muted">
-            Status: <span className="text-brand-cyan">{result.validationStatus}</span>
+            Status: <Badge color={DECK_STATUS_BADGE[result.validationStatus]}>{result.validationStatus}</Badge>
           </p>
           <DeckPreview decodedCards={result.decodedCards} />
         </div>
