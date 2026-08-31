@@ -11,6 +11,7 @@ import { ProfilePage } from './pages/ProfilePage'
 import { PublicProfilePage } from './pages/PublicProfilePage'
 import { TournamentsListPage } from './pages/organizer/TournamentsListPage'
 import { TournamentEditPage } from './pages/organizer/TournamentEditPage'
+import { OrganizerDashboardPage } from './pages/organizer/OrganizerDashboardPage'
 import { TournamentPage } from './pages/TournamentPage'
 import { RankingPage } from './pages/RankingPage'
 
@@ -37,6 +38,14 @@ function App() {
           <Route path="/tournaments/:id" element={<TournamentPage />} />
           <Route path="/t/:id" element={<TournamentPage />} />
           <Route path="/ranking" element={<RankingPage />} />
+          <Route
+            path="/organizer"
+            element={
+              <PrivateRoute requiredRole="ORGANIZER">
+                <OrganizerDashboardPage />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/organizer/tournaments"
             element={

@@ -87,6 +87,16 @@ export type SeasonRankingRow = {
   tournamentsPlayed: number
 }
 
+export type OrganizerDashboardRow = {
+  id: string
+  name: string
+  format: TournamentFormat
+  status: TournamentStatus
+  scheduledAt: string
+  pendingDecksCount: number
+  disputedMatchesCount: number
+}
+
 export const FORMAT_LABELS: Record<TournamentFormat, string> = {
   SWISS: 'Suíço',
   SINGLE_ELIM: 'Eliminação simples',
