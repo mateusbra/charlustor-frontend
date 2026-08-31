@@ -22,11 +22,11 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <AuthLayout title="Verifique seu e-mail">
-        <p className="text-sm text-gray-600">
-          Se existir uma conta para <span className="font-medium">{email}</span>, enviamos um link de
+        <p className="text-sm text-text-muted">
+          Se existir uma conta para <span className="font-medium text-text">{email}</span>, enviamos um link de
           redefinição de senha.
         </p>
-        <Link to="/login" className="mt-4 block text-sm text-gray-500">
+        <Link to="/login" className="mt-4 block text-sm text-text-muted hover:text-brand-pink">
           Voltar para o login
         </Link>
       </AuthLayout>
@@ -42,17 +42,17 @@ export function ForgotPasswordPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded bg-gray-900 py-2 text-sm text-white disabled:opacity-50"
+          className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
         >
           Enviar link de redefinição
         </button>
       </form>
-      <Link to="/login" className="mt-4 block text-sm text-gray-500">
+      <Link to="/login" className="mt-4 block text-sm text-text-muted hover:text-brand-pink">
         Voltar para o login
       </Link>
     </AuthLayout>

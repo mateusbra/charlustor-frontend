@@ -14,24 +14,24 @@ export function OrganizerDashboardPage() {
   }, [accessToken])
 
   return (
-    <AuthLayout title="Painel do organizador">
-      {tournaments === null && <p className="text-sm text-gray-500">Carregando...</p>}
+    <AuthLayout title="Painel do organizador" wide>
+      {tournaments === null && <p className="text-sm text-text-muted">Carregando...</p>}
       {tournaments !== null && tournaments.length === 0 && (
-        <p className="text-sm text-gray-500">Você ainda não criou nenhum torneio.</p>
+        <p className="text-sm text-text-muted">Você ainda não criou nenhum torneio.</p>
       )}
       <ul className="space-y-3">
         {tournaments?.map((t) => (
-          <li key={t.id} className="rounded border border-gray-200 p-3 text-sm">
+          <li key={t.id} className="rounded-lg border border-panel-border bg-panel-soft/40 p-3 text-sm">
             <div className="flex items-center justify-between">
-              <span>
-                {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-gray-500">{t.status}</span>
+              <span className="text-text">
+                {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-text-muted">{t.status}</span>
               </span>
-              <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-gray-500 underline">
+              <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-brand-cyan hover:underline">
                 Ver torneio
               </Link>
             </div>
             {(t.pendingDecksCount > 0 || t.disputedMatchesCount > 0) && (
-              <div className="mt-1 space-x-3 text-xs text-red-600">
+              <div className="mt-1 space-x-3 text-xs text-brand-gold">
                 {t.pendingDecksCount > 0 && <span>{t.pendingDecksCount} deck(s) pendente(s)</span>}
                 {t.disputedMatchesCount > 0 && <span>{t.disputedMatchesCount} partida(s) em disputa</span>}
               </div>

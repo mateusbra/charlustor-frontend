@@ -21,12 +21,12 @@ export function OAuthButtons() {
   if (enabled.length === 0) return null
 
   return (
-    <div className="mt-4 space-y-2 border-t border-gray-200 pt-4">
+    <div className="mt-4 space-y-2 border-t border-panel-border pt-4">
       {enabled.map(([provider]) => (
         <a
           key={provider}
           href={`${API_URL}/auth/oauth/${provider}`}
-          className="block w-full rounded border border-gray-300 py-2 text-center text-sm hover:bg-gray-50"
+          className="block w-full rounded border border-panel-border py-2 text-center text-sm text-text transition hover:border-brand-pink hover:text-brand-pink"
         >
           {PROVIDER_LABELS[provider] ?? `Entrar com ${provider}`}
         </a>

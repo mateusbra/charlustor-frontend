@@ -45,50 +45,56 @@ export function AdminSeasonsPage() {
   }
 
   return (
-    <AuthLayout title="Temporadas">
+    <AuthLayout title="Temporadas" wide>
       <form onSubmit={handleCreate} className="space-y-3">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Nome</label>
+          <label className="mb-1 block text-xs text-text-muted">Nome</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
             minLength={3}
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Data de início</label>
+          <label className="mb-1 block text-xs text-text-muted">Data de início</label>
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             required
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text focus:border-brand-pink focus:outline-none"
           />
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button type="submit" className="w-full rounded bg-gray-900 py-2 text-sm text-white">
+        {error && <p className="text-sm text-brand-red">{error}</p>}
+        <button type="submit" className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90">
           Criar temporada
         </button>
       </form>
 
-      <div className="mt-6 border-t border-gray-200 pt-4">
-        {seasons === null && <p className="text-sm text-gray-500">Carregando...</p>}
-        {seasons !== null && seasons.length === 0 && <p className="text-sm text-gray-500">Nenhuma temporada criada.</p>}
+      <div className="mt-6 border-t border-panel-border pt-4">
+        {seasons === null && <p className="text-sm text-text-muted">Carregando...</p>}
+        {seasons !== null && seasons.length === 0 && <p className="text-sm text-text-muted">Nenhuma temporada criada.</p>}
         <ul className="space-y-2">
           {seasons?.map((s) => (
-            <li key={s.id} className="flex items-center justify-between text-sm">
-              <span>
-                {s.name} — <span className="text-gray-500">{s.isActive ? 'ativa' : 'inativa'}</span>
+            <li key={s.id} className="flex items-center justify-between border-b border-panel-border pb-2 text-sm last:border-0">
+              <span className="text-text">
+                {s.name} — <span className={s.isActive ? 'text-brand-cyan' : 'text-text-muted'}>{s.isActive ? 'ativa' : 'inativa'}</span>
               </span>
               {s.isActive ? (
-                <button onClick={() => handleClose(s.id)} className="rounded border border-gray-300 px-3 py-1 text-xs">
+                <button
+                  onClick={() => handleClose(s.id)}
+                  className="rounded border border-brand-red px-3 py-1 text-xs text-brand-red transition hover:bg-brand-red/10"
+                >
                   Encerrar
                 </button>
               ) : (
-                <button onClick={() => handleActivate(s.id)} className="rounded border border-gray-300 px-3 py-1 text-xs">
+                <button
+                  onClick={() => handleActivate(s.id)}
+                  className="rounded border border-brand-cyan px-3 py-1 text-xs text-brand-cyan transition hover:bg-brand-cyan/10"
+                >
                   Ativar
                 </button>
               )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import { AuthLayout } from '../auth/AuthLayout'
 
 type HealthResponse = {
   status: string
@@ -9,7 +9,7 @@ type HealthResponse = {
 }
 
 export function HealthPage() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const [health, setHealth] = useState<HealthResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -23,52 +23,31 @@ export function HealthPage() {
   }, [])
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-900">
-      <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-1 text-xl font-semibold">Torneios Master Duel</h1>
-        <p className="mb-4 text-xs text-gray-400">Feature 004 — Tournament management</p>
-        {error && <p className="text-red-600">{error}</p>}
-        {!error && !health && <p className="text-gray-500">Consultando backend...</p>}
-        {health && (
-          <ul className="space-y-1 text-sm">
-            <li>
-              status: <span className="font-mono">{health.status}</span>
-            </li>
-            <li>
-              db: <span className="font-mono">{health.db}</span>
-            </li>
-            <li>
-              timestamp: <span className="font-mono">{health.timestamp}</span>
-            </li>
-          </ul>
+    <AuthLayout title="Torneios semanais de Master Duel">
+      <p className="mb-4 text-sm text-text-muted">
+        {user ? (
+          <>
+            Bem-vindo de volta, <span className="font-medium text-text">{user.email}</span>.
+          </>
+        ) : (
+          'Entre pra se inscrever nos próximos torneios.'
         )}
-        <div className="mt-4 border-t border-gray-200 pt-4 text-sm">
-          {user ? (
-            <div className="flex items-center justify-between">
-              <span>
-                Logado como <span className="font-medium">{user.email}</span>
-              </span>
-              <span className="space-x-3">
-                <Link to="/profile" className="text-gray-500 underline">
-                  Meu perfil
-                </Link>
-                {(user.role === 'ORGANIZER' || user.role === 'ADMIN') && (
-                  <Link to="/organizer/tournaments" className="text-gray-500 underline">
-                    Meus torneios
-                  </Link>
-                )}
-                <button onClick={() => logout()} className="text-gray-500 underline">
-                  Sair
-                </button>
-              </span>
-            </div>
-          ) : (
-            <Link to="/login" className="text-gray-500 underline">
-              Entrar
-            </Link>
-          )}
-        </div>
-      </div>
-    </main>
+      </p>
+      {error && <p className="text-sm text-brand-red">{error}</p>}
+      {!error && !health && <p className="text-sm text-text-muted">Consultando backend...</p>}
+      {health && (
+        <ul className="space-y-1 border-t border-panel-border pt-3 text-xs text-text-muted">
+          <li>
+            status: <span className="font-mono text-brand-cyan">{health.status}</span>
+          </li>
+          <li>
+            db: <span className="font-mono text-brand-cyan">{health.db}</span>
+          </li>
+          <li>
+            timestamp: <span className="font-mono">{health.timestamp}</span>
+          </li>
+        </ul>
+      )}
+    </AuthLayout>
   )
 }

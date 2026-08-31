@@ -13,7 +13,7 @@ export function OAuthCallbackPage() {
 
   return (
     <AuthLayout title="Entrando...">
-      <p className="text-sm text-gray-500">Concluindo login...</p>
+      <p className="text-sm text-text-muted">Concluindo login...</p>
     </AuthLayout>
   )
 }

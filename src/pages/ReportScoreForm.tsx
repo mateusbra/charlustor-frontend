@@ -32,20 +32,20 @@ export function ReportScoreForm({ match, myUserId, onReported }: { match: Match;
   }
 
   if (match.resultStatus === 'CONFIRMED') {
-    return <p className="text-sm text-green-700">Confirmado: {match.confirmedScore}</p>
+    return <p className="text-sm text-brand-green">Confirmado: {match.confirmedScore}</p>
   }
 
   if (match.resultStatus === 'DISPUTED') {
-    return <p className="text-sm text-red-600">Placar em disputa — aguardando o organizador resolver.</p>
+    return <p className="text-sm text-brand-red">Placar em disputa — aguardando o organizador resolver.</p>
   }
 
   if (myReport) {
-    return <p className="text-sm text-gray-500">Você reportou {myReport}. Aguardando o adversário.</p>
+    return <p className="text-sm text-text-muted">Você reportou {myReport}. Aguardando o adversário.</p>
   }
 
   return (
     <div>
-      <p className="mb-2 text-sm text-gray-500">Sua partida contra {opponentName}</p>
+      <p className="mb-2 text-sm text-text-muted">Sua partida contra {opponentName}</p>
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <input
           type="text"
@@ -53,17 +53,17 @@ export function ReportScoreForm({ match, myUserId, onReported }: { match: Match;
           value={score}
           onChange={(e) => setScore(e.target.value)}
           required
-          className="flex-1 rounded border border-gray-300 px-2 py-1 text-sm"
+          className="flex-1 rounded border border-panel-border bg-ink/40 px-2 py-1 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
         <button
           type="submit"
           disabled={submitting}
-          className="rounded bg-gray-900 px-3 py-1 text-sm text-white disabled:opacity-50"
+          className="rounded bg-gradient-to-r from-brand-pink to-brand-purple px-3 py-1 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
         >
           Reportar
         </button>
       </form>
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-brand-red">{error}</p>}
     </div>
   )
 }

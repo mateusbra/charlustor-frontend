@@ -42,25 +42,25 @@ export function TournamentsListPage() {
   const myTournaments = tournaments?.filter((t) => t.organizerId === user?.id) ?? []
 
   return (
-    <AuthLayout title="Meus torneios">
+    <AuthLayout title="Meus torneios" wide>
       <TournamentForm initialValues={EMPTY_FORM} submitLabel="Criar torneio" onSubmit={handleCreate} />
 
-      <div className="mt-6 border-t border-gray-200 pt-4">
-        {tournaments === null && <p className="text-sm text-gray-500">Carregando...</p>}
+      <div className="mt-6 border-t border-panel-border pt-4">
+        {tournaments === null && <p className="text-sm text-text-muted">Carregando...</p>}
         {tournaments !== null && myTournaments.length === 0 && (
-          <p className="text-sm text-gray-500">Você ainda não criou nenhum torneio.</p>
+          <p className="text-sm text-text-muted">Você ainda não criou nenhum torneio.</p>
         )}
         <ul className="space-y-2">
           {myTournaments.map((t) => (
-            <li key={t.id} className="flex items-center justify-between text-sm">
-              <span>
-                {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-gray-500">{t.status}</span>
+            <li key={t.id} className="flex items-center justify-between border-b border-panel-border pb-2 text-sm last:border-0">
+              <span className="text-text">
+                {t.name} — {FORMAT_LABELS[t.format]} — <span className="text-text-muted">{t.status}</span>
               </span>
               <span className="space-x-3">
-                <Link to={`/tournaments/${t.id}`} className="text-gray-500 underline">
+                <Link to={`/tournaments/${t.id}`} className="text-brand-cyan hover:underline">
                   Ver página pública
                 </Link>
-                <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-gray-500 underline">
+                <Link to={`/organizer/tournaments/${t.id}/edit`} className="text-brand-cyan hover:underline">
                   Editar
                 </Link>
               </span>

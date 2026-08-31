@@ -11,10 +11,10 @@ export function PrivateRoute({
 }) {
   const { user, loading } = useAuth()
 
-  if (loading) return <p className="p-8 text-gray-500">Carregando...</p>
+  if (loading) return <p className="p-8 text-text-muted">Carregando...</p>
   if (!user) return <Navigate to="/login" replace />
   if (requiredRole && user.role !== requiredRole && user.role !== 'ADMIN') {
-    return <p className="p-8 text-gray-500">Você não tem permissão para acessar esta página.</p>
+    return <p className="p-8 text-text-muted">Você não tem permissão para acessar esta página.</p>
   }
 
   return <>{children}</>

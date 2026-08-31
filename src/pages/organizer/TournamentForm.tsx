@@ -59,22 +59,22 @@ export function TournamentForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <div>
-        <label className="mb-1 block text-xs text-gray-500">Nome</label>
+        <label className="mb-1 block text-xs text-text-muted">Nome</label>
         <input
           type="text"
           value={values.name}
           onChange={(e) => set('name', e.target.value)}
           required
           minLength={3}
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
       </div>
       <div>
-        <label className="mb-1 block text-xs text-gray-500">Formato</label>
+        <label className="mb-1 block text-xs text-text-muted">Formato</label>
         <select
           value={values.format}
           onChange={(e) => set('format', e.target.value as TournamentFormat)}
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text focus:border-brand-pink focus:outline-none"
         >
           {Object.entries(FORMAT_LABELS).map(([value, label]) => (
             <option key={value} value={value}>
@@ -84,44 +84,44 @@ export function TournamentForm({
         </select>
       </div>
       <div>
-        <label className="mb-1 block text-xs text-gray-500">Data/hora</label>
+        <label className="mb-1 block text-xs text-text-muted">Data/hora</label>
         <input
           type="datetime-local"
           value={values.scheduledAt}
           onChange={(e) => set('scheduledAt', e.target.value)}
           required
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text focus:border-brand-pink focus:outline-none"
         />
       </div>
       {needsRounds(values.format) && (
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Número de rodadas</label>
+          <label className="mb-1 block text-xs text-text-muted">Número de rodadas</label>
           <input
             type="number"
             min={1}
             value={values.roundsCount}
             onChange={(e) => set('roundsCount', e.target.value)}
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text focus:border-brand-pink focus:outline-none"
           />
         </div>
       )}
       {needsTopCut(values.format) && (
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Tamanho do top cut</label>
+          <label className="mb-1 block text-xs text-text-muted">Tamanho do top cut</label>
           <input
             type="number"
             min={2}
             value={values.topCutSize}
             onChange={(e) => set('topCutSize', e.target.value)}
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text focus:border-brand-pink focus:outline-none"
           />
         </div>
       )}
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-brand-red">{error}</p>}
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded bg-gray-900 py-2 text-sm text-white disabled:opacity-50"
+        className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
       >
         {submitLabel}
       </button>

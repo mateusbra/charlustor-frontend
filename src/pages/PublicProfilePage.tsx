@@ -22,7 +22,7 @@ export function PublicProfilePage() {
   if (notFound) {
     return (
       <AuthLayout title="Jogador não encontrado">
-        <p className="text-sm text-gray-500">Não existe nenhum jogador com esse identificador.</p>
+        <p className="text-sm text-text-muted">Não existe nenhum jogador com esse identificador.</p>
       </AuthLayout>
     )
   }
@@ -30,14 +30,14 @@ export function PublicProfilePage() {
   if (!profile) {
     return (
       <AuthLayout title="Perfil">
-        <p className="text-sm text-gray-500">Carregando...</p>
+        <p className="text-sm text-text-muted">Carregando...</p>
       </AuthLayout>
     )
   }
 
   return (
     <AuthLayout title={profile.nickname ?? 'Jogador sem nickname'}>
-      <p className="text-sm text-gray-500">ID: {profile.id}</p>
+      <p className="text-sm text-text-muted">ID: {profile.id}</p>
     </AuthLayout>
   )
 }

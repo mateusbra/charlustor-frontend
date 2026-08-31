@@ -26,19 +26,19 @@ export function AdminUsersPage() {
   }
 
   return (
-    <AuthLayout title="Usuários">
-      {users === null && <p className="text-sm text-gray-500">Carregando...</p>}
-      {users !== null && users.length === 0 && <p className="text-sm text-gray-500">Nenhum usuário cadastrado.</p>}
+    <AuthLayout title="Usuários" wide>
+      {users === null && <p className="text-sm text-text-muted">Carregando...</p>}
+      {users !== null && users.length === 0 && <p className="text-sm text-text-muted">Nenhum usuário cadastrado.</p>}
       <ul className="space-y-2">
         {users?.map((u) => (
-          <li key={u.id} className="flex items-center justify-between text-sm">
-            <span>
-              {u.nickname ?? u.email} <span className="text-gray-500">({u.email})</span>
+          <li key={u.id} className="flex items-center justify-between border-b border-panel-border pb-2 text-sm last:border-0">
+            <span className="text-text">
+              {u.nickname ?? u.email} <span className="text-text-muted">({u.email})</span>
             </span>
             <select
               value={u.role}
               onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
-              className="rounded border border-gray-300 px-2 py-1 text-sm"
+              className="rounded border border-panel-border bg-ink/40 px-2 py-1 text-sm text-text focus:border-brand-pink focus:outline-none"
             >
               {ROLES.map((role) => (
                 <option key={role} value={role}>

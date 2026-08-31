@@ -27,10 +27,10 @@ export function DisputedMatchRow({ match, onResolved }: { match: Match; onResolv
   }
 
   return (
-    <li className="rounded border border-red-200 p-2 text-sm">
-      <p>
-        {nameA} relatou <span className="font-mono">{match.reportedScoreA}</span> — {nameB} relatou{' '}
-        <span className="font-mono">{match.reportedScoreB}</span>
+    <li className="rounded border border-brand-red/40 bg-brand-red/5 p-2 text-sm">
+      <p className="text-text">
+        {nameA} relatou <span className="font-mono text-brand-gold">{match.reportedScoreA}</span> — {nameB} relatou{' '}
+        <span className="font-mono text-brand-gold">{match.reportedScoreB}</span>
       </p>
       <form onSubmit={handleSubmit} className="mt-2 flex items-center gap-2">
         <input
@@ -39,13 +39,13 @@ export function DisputedMatchRow({ match, onResolved }: { match: Match; onResolv
           value={score}
           onChange={(e) => setScore(e.target.value)}
           required
-          className="flex-1 rounded border border-gray-300 px-2 py-1 text-xs"
+          className="flex-1 rounded border border-panel-border bg-ink/40 px-2 py-1 text-xs text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
-        <button type="submit" className="rounded bg-gray-900 px-3 py-1 text-xs text-white">
+        <button type="submit" className="rounded bg-gradient-to-r from-brand-pink to-brand-purple px-3 py-1 text-xs font-semibold text-white transition hover:opacity-90">
           Resolver
         </button>
       </form>
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-brand-red">{error}</p>}
     </li>
   )
 }

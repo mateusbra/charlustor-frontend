@@ -1,8 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { AdminSeasonsPage } from './AdminSeasonsPage'
 import * as api from '../../auth/api'
 import * as authContext from '../../auth/AuthContext'
+
+function renderPage() {
+  return render(
+    <MemoryRouter>
+      <AdminSeasonsPage />
+    </MemoryRouter>,
+  )
+}
 
 vi.mock('../../auth/api', async () => {
   const actual = await vi.importActual<typeof api>('../../auth/api')
@@ -29,7 +38,7 @@ describe('AdminSeasonsPage', () => {
       { id: 's-2', name: 'Temporada 2', startDate: '2026-06-01', endDate: null, isActive: false },
     ])
 
-    render(<AdminSeasonsPage />)
+    renderPage()
 
     expect(await screen.findByText(/Temporada 1/)).toBeInTheDocument()
     expect(screen.getByText('Encerrar')).toBeInTheDocument()
@@ -44,7 +53,7 @@ describe('AdminSeasonsPage', () => {
       return Promise.resolve(undefined)
     })
 
-    render(<AdminSeasonsPage />)
+    renderPage()
 
     fireEvent.click(await screen.findByText('Ativar'))
 

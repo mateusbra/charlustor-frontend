@@ -36,7 +36,7 @@ export function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
         <input
           type="password"
@@ -44,18 +44,18 @@ export function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-brand-red">{error}</p>}
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded bg-gray-900 py-2 text-sm text-white disabled:opacity-50"
+          className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
         >
           Entrar
         </button>
       </form>
-      <div className="mt-4 flex justify-between text-sm text-gray-500">
+      <div className="mt-4 flex justify-between text-sm text-text-muted">
         <Link to="/register">Criar conta</Link>
         <Link to="/forgot-password">Esqueci a senha</Link>
       </div>

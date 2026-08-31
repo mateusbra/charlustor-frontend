@@ -88,19 +88,21 @@ export function TournamentEditPage() {
 
   if (!tournament) {
     return (
-      <AuthLayout title="Editar torneio">
-        <p className="text-sm text-gray-500">Carregando...</p>
+      <AuthLayout title="Editar torneio" wide>
+        <p className="text-sm text-text-muted">Carregando...</p>
       </AuthLayout>
     )
   }
 
   return (
-    <AuthLayout title={`Editar: ${tournament.name}`}>
-      <p className="mb-4 text-sm text-gray-500">Status: {tournament.status}</p>
+    <AuthLayout title={`Editar: ${tournament.name}`} wide>
+      <p className="mb-4 text-sm text-text-muted">
+        Status: <span className="text-brand-cyan">{tournament.status}</span>
+      </p>
       <TournamentForm initialValues={toFormValues(tournament)} submitLabel="Salvar alterações" onSubmit={handleUpdate} />
 
       {actionError && (
-        <div className="mt-3 text-sm text-red-600">
+        <div className="mt-3 text-sm text-brand-red">
           <p>{actionError}</p>
           {pendingParticipants && pendingParticipants.length > 0 && (
             <ul className="mt-1 list-disc pl-5 text-xs">
@@ -112,11 +114,11 @@ export function TournamentEditPage() {
         </div>
       )}
 
-      <div className="mt-4 flex flex-wrap gap-2 border-t border-gray-200 pt-4 text-sm">
+      <div className="mt-4 flex flex-wrap gap-2 border-t border-panel-border pt-4 text-sm">
         {tournament.status === 'DRAFT' && (
           <button
             onClick={() => runAction(() => apiRequest(`/tournaments/${id}/open-registration`, { method: 'POST', token: accessToken ?? undefined }))}
-            className="rounded border border-gray-300 px-3 py-1.5"
+            className="rounded border border-panel-border px-3 py-1.5 text-text transition hover:border-brand-pink"
           >
             Abrir inscrições
           </button>
@@ -124,20 +126,20 @@ export function TournamentEditPage() {
         {tournament.status === 'REGISTRATION_OPEN' && (
           <button
             onClick={() => runAction(() => apiRequest(`/tournaments/${id}/close-registration`, { method: 'POST', token: accessToken ?? undefined }))}
-            className="rounded border border-gray-300 px-3 py-1.5"
+            className="rounded border border-panel-border px-3 py-1.5 text-text transition hover:border-brand-pink"
           >
             Fechar inscrições
           </button>
         )}
         {tournament.status === 'DRAFT' && (
-          <button onClick={handleDelete} className="rounded border border-red-300 px-3 py-1.5 text-red-600">
+          <button onClick={handleDelete} className="rounded border border-brand-red px-3 py-1.5 text-brand-red transition hover:bg-brand-red/10">
             Excluir torneio
           </button>
         )}
         {(tournament.status === 'REGISTRATION_OPEN' || tournament.status === 'REGISTRATION_CLOSED') && (
           <button
             onClick={() => runAction(() => apiRequest(`/tournaments/${id}/start`, { method: 'POST', token: accessToken ?? undefined }))}
-            className="rounded bg-gray-900 px-3 py-1.5 text-white"
+            className="rounded bg-gradient-to-r from-brand-pink to-brand-purple px-3 py-1.5 font-semibold text-white transition hover:opacity-90"
           >
             Iniciar torneio
           </button>
@@ -146,21 +148,21 @@ export function TournamentEditPage() {
           <>
             <button
               onClick={() => runAction(() => apiRequest(`/tournaments/${id}/advance-round`, { method: 'POST', token: accessToken ?? undefined }))}
-              className="rounded bg-gray-900 px-3 py-1.5 text-white"
+              className="rounded bg-gradient-to-r from-brand-pink to-brand-purple px-3 py-1.5 font-semibold text-white transition hover:opacity-90"
             >
               Avançar rodada
             </button>
             {tournament.format === 'SWISS_TOP_CUT' && !rounds?.some((r) => r.phase === 'TOP_CUT') && (
               <button
                 onClick={() => runAction(() => apiRequest(`/tournaments/${id}/start-top-cut`, { method: 'POST', token: accessToken ?? undefined }))}
-                className="rounded border border-gray-300 px-3 py-1.5"
+                className="rounded border border-panel-border px-3 py-1.5 text-text transition hover:border-brand-pink"
               >
                 Iniciar Top Cut
               </button>
             )}
             <button
               onClick={() => runAction(() => apiRequest(`/tournaments/${id}/complete`, { method: 'POST', token: accessToken ?? undefined }))}
-              className="rounded border border-gray-300 px-3 py-1.5"
+              className="rounded border border-panel-border px-3 py-1.5 text-text transition hover:border-brand-pink"
             >
               Encerrar torneio
             </button>
@@ -169,12 +171,12 @@ export function TournamentEditPage() {
       </div>
 
       {rounds && rounds.length > 0 && (
-        <div className="mt-4 border-t border-gray-200 pt-4">
-          <p className="mb-2 text-xs text-gray-500">Rodadas</p>
-          <ul className="space-y-1 text-sm">
+        <div className="mt-4 border-t border-panel-border pt-4">
+          <p className="mb-2 text-xs text-text-muted">Rodadas</p>
+          <ul className="space-y-1 text-sm text-text">
             {rounds.map((r) => (
               <li key={r.id}>
-                Rodada {r.number} {r.phase === 'TOP_CUT' && '(Top Cut)'} — {r.status} — {r.matches.length} partida(s)
+                Rodada {r.number} {r.phase === 'TOP_CUT' && '(Top Cut)'} — <span className="text-text-muted">{r.status}</span> — {r.matches.length} partida(s)
               </li>
             ))}
           </ul>
@@ -182,8 +184,8 @@ export function TournamentEditPage() {
       )}
 
       {rounds && rounds.some((r) => r.matches.some((m) => m.resultStatus === 'DISPUTED')) && (
-        <div className="mt-4 border-t border-gray-200 pt-4">
-          <p className="mb-2 text-xs text-gray-500">Partidas em disputa</p>
+        <div className="mt-4 border-t border-panel-border pt-4">
+          <p className="mb-2 text-xs text-text-muted">Partidas em disputa</p>
           <ul className="space-y-2">
             {rounds
               .flatMap((r) => r.matches)
@@ -195,8 +197,8 @@ export function TournamentEditPage() {
         </div>
       )}
 
-      <div className="mt-4 border-t border-gray-200 pt-4">
-        <p className="mb-2 text-xs text-gray-500">
+      <div className="mt-4 border-t border-panel-border pt-4">
+        <p className="mb-2 text-xs text-text-muted">
           Inscritos ({participants?.filter((p) => p.status === 'REGISTERED').length ?? 0})
         </p>
         <ul className="space-y-2">

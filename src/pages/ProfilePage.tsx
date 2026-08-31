@@ -51,17 +51,17 @@ export function ProfilePage() {
   if (!profile) {
     return (
       <AuthLayout title="Meu perfil">
-        <p className="text-sm text-gray-500">Carregando...</p>
+        <p className="text-sm text-text-muted">Carregando...</p>
       </AuthLayout>
     )
   }
 
   return (
     <AuthLayout title="Meu perfil">
-      <p className="mb-4 text-sm text-gray-500">{profile.email}</p>
+      <p className="mb-4 text-sm text-text-muted">{profile.email}</p>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Nickname</label>
+          <label className="mb-1 block text-xs text-text-muted">Nickname</label>
           <input
             type="text"
             placeholder="Nickname"
@@ -69,25 +69,25 @@ export function ProfilePage() {
             onChange={(e) => setNickname(e.target.value)}
             minLength={3}
             maxLength={20}
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Friend Code (Master Duel)</label>
+          <label className="mb-1 block text-xs text-text-muted">Friend Code (Master Duel)</label>
           <input
             type="text"
             placeholder="Friend Code"
             value={friendCode}
             onChange={(e) => setFriendCode(e.target.value)}
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+            className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
           />
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {success && <p className="text-sm text-green-600">Perfil salvo.</p>}
+        {error && <p className="text-sm text-brand-red">{error}</p>}
+        {success && <p className="text-sm text-brand-cyan">Perfil salvo.</p>}
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded bg-gray-900 py-2 text-sm text-white disabled:opacity-50"
+          className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
         >
           Salvar
         </button>

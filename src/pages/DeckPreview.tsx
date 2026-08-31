@@ -4,10 +4,10 @@ function CardList({ title, cards }: { title: string; cards: DecodedDeck['main'] 
   if (cards.length === 0) return null
   return (
     <div>
-      <p className="text-xs font-medium text-gray-500">
+      <p className="text-xs font-medium text-brand-cyan">
         {title} ({cards.reduce((sum, c) => sum + c.quantity, 0)})
       </p>
-      <ul className="text-xs text-gray-700">
+      <ul className="text-xs text-text-muted">
         {cards.map((c, i) => (
           <li key={`${c.name}-${i}`}>
             {c.quantity}x {c.name}

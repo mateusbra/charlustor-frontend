@@ -1,8 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { AdminUsersPage } from './AdminUsersPage'
 import * as api from '../../auth/api'
 import * as authContext from '../../auth/AuthContext'
+
+function renderPage() {
+  return render(
+    <MemoryRouter>
+      <AdminUsersPage />
+    </MemoryRouter>,
+  )
+}
 
 vi.mock('../../auth/api', async () => {
   const actual = await vi.importActual<typeof api>('../../auth/api')
@@ -28,7 +37,7 @@ describe('AdminUsersPage', () => {
       { id: 'u-1', email: 'alice@example.com', nickname: 'Alice', role: 'PLAYER', createdAt: '2026-01-01' },
     ])
 
-    render(<AdminUsersPage />)
+    renderPage()
 
     expect(await screen.findByText(/Alice/)).toBeInTheDocument()
     expect(screen.getByRole('combobox')).toHaveValue('PLAYER')
@@ -42,7 +51,7 @@ describe('AdminUsersPage', () => {
       return Promise.resolve(undefined)
     })
 
-    render(<AdminUsersPage />)
+    renderPage()
 
     const select = await screen.findByRole('combobox')
     fireEvent.change(select, { target: { value: 'ORGANIZER' } })

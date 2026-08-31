@@ -42,36 +42,38 @@ export function DeckSubmitForm({ participantId, onSubmitted }: { participantId: 
     <div>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Captura do deck (principal + extra)</label>
+          <label className="mb-1 block text-xs text-text-muted">Captura do deck (principal + extra)</label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setMainExtra(e.target.files?.[0] ?? null)}
-            className="w-full text-xs"
+            className="w-full text-xs text-text-muted file:mr-2 file:rounded file:border-0 file:bg-panel-soft file:px-2 file:py-1 file:text-text"
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Captura do side deck</label>
+          <label className="mb-1 block text-xs text-text-muted">Captura do side deck</label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setSide(e.target.files?.[0] ?? null)}
-            className="w-full text-xs"
+            className="w-full text-xs text-text-muted file:mr-2 file:rounded file:border-0 file:bg-panel-soft file:px-2 file:py-1 file:text-text"
           />
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-brand-red">{error}</p>}
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded bg-gray-900 py-2 text-sm text-white disabled:opacity-50"
+          className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
         >
           {submitting ? 'Reconhecendo cartas...' : 'Enviar deck'}
         </button>
       </form>
 
       {result && (
-        <div className="mt-4 border-t border-gray-200 pt-4">
-          <p className="mb-2 text-xs text-gray-500">Status: {result.validationStatus}</p>
+        <div className="mt-4 border-t border-panel-border pt-4">
+          <p className="mb-2 text-xs text-text-muted">
+            Status: <span className="text-brand-cyan">{result.validationStatus}</span>
+          </p>
           <DeckPreview decodedCards={result.decodedCards} />
         </div>
       )}

@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: "Rajdhani", "Inter", sans-serif;
+
+  --color-ink: #08070f;
+  --color-panel: #131022;
+  --color-panel-soft: #1a1630;
+  --color-panel-border: #2c2645;
+
+  --color-text: #f4f2fb;
+  --color-text-muted: #a29bc2;
+
+  --color-brand-pink: #ff2e8a;
+  --color-brand-pink-soft: #ff6bb0;
+  --color-brand-purple: #8b3ffc;
+  --color-brand-cyan: #22d3ee;
+  --color-brand-gold: #f7b733;
+  --color-brand-red: #ff5470;
+  --color-brand-green: #2fe6a0;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-text);
+  background-image:
+    radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--color-brand-purple) 22%, transparent), transparent 45%),
+    radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--color-brand-pink) 16%, transparent), transparent 40%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}

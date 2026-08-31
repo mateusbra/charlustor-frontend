@@ -28,10 +28,10 @@ export function ResetPasswordPage() {
   if (!token) {
     return (
       <AuthLayout title="Link inválido">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-text-muted">
           Este link de redefinição de senha está incompleto ou expirado.
         </p>
-        <Link to="/forgot-password" className="mt-4 block text-sm text-gray-500">
+        <Link to="/forgot-password" className="mt-4 block text-sm text-text-muted hover:text-brand-pink">
           Solicitar um novo link
         </Link>
       </AuthLayout>
@@ -48,13 +48,13 @@ export function ResetPasswordPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded border border-panel-border bg-ink/40 px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-brand-pink focus:outline-none"
         />
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-brand-red">{error}</p>}
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded bg-gray-900 py-2 text-sm text-white disabled:opacity-50"
+          className="w-full rounded bg-gradient-to-r from-brand-pink to-brand-purple py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
         >
           Redefinir senha
         </button>
