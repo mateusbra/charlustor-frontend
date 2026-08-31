@@ -87,6 +87,16 @@ export type SeasonRankingRow = {
   tournamentsPlayed: number
 }
 
+export type Role = 'PLAYER' | 'ORGANIZER' | 'ADMIN'
+
+export type AdminUser = {
+  id: string
+  email: string
+  nickname: string | null
+  role: Role
+  createdAt: string
+}
+
 export type OrganizerDashboardRow = {
   id: string
   name: string

@@ -12,6 +12,8 @@ import { PublicProfilePage } from './pages/PublicProfilePage'
 import { TournamentsListPage } from './pages/organizer/TournamentsListPage'
 import { TournamentEditPage } from './pages/organizer/TournamentEditPage'
 import { OrganizerDashboardPage } from './pages/organizer/OrganizerDashboardPage'
+import { AdminUsersPage } from './pages/admin/AdminUsersPage'
+import { AdminSeasonsPage } from './pages/admin/AdminSeasonsPage'
 import { TournamentPage } from './pages/TournamentPage'
 import { RankingPage } from './pages/RankingPage'
 
@@ -59,6 +61,22 @@ function App() {
             element={
               <PrivateRoute requiredRole="ORGANIZER">
                 <TournamentEditPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <PrivateRoute requiredRole="ADMIN">
+                <AdminUsersPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/seasons"
+            element={
+              <PrivateRoute requiredRole="ADMIN">
+                <AdminSeasonsPage />
               </PrivateRoute>
             }
           />
